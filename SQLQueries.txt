@@ -1,0 +1,38 @@
+/* Query 1 */
+SELECT DISTINCT Artist.Name as Artist_Name , count(track.Name) as Track_count
+FROM artist join album on  Artist.ArtistId = album.ArtistId
+join track on track.AlbumId = Album.AlbumId
+group by Artist_Name 
+order by Track_count DESC
+LIMIT 7
+
+/* Query 2 */
+SELECT  Genre.Name as Music_type , count (Genre.Name) as counts
+FROM artist join album on  Artist.ArtistId = album.ArtistId
+join track on track.AlbumId = Album.AlbumId
+join Genre on Genre.GenreId = Track.GenreId
+where Artist.Name = 'Iron Maiden'
+group by Music_type
+order by counts DESC 
+
+/* Query 3 */
+SELECT Artist.Name as Artist_Name ,  Genre.Name as music_type , count(Customer.CustomerId) as nomofcustomers 
+FROM artist join album on  Artist.ArtistId = album.ArtistId
+join track on track.AlbumId = Album.AlbumId
+join Genre on Genre.GenreId = Track.GenreId
+join InvoiceLine on InvoiceLine.TrackId = Track.TrackId
+join Invoice on Invoice.InvoiceId = InvoiceLine.InvoiceId
+join Customer on Customer.CustomerId=Invoice.CustomerId
+where Artist.Name='Iron Maiden' 
+group by Artist.Name , music_type
+
+/* Query 4 */
+SELECT Artist.Name as Artist_Name ,  Sum((InvoiceLine.Quantity)*(InvoiceLine.UnitPrice)) as earnings  
+FROM artist join album on  Artist.ArtistId = album.ArtistId
+join track on track.AlbumId = Album.AlbumId
+join Genre on Genre.GenreId = Track.GenreId
+join InvoiceLine on InvoiceLine.TrackId = Track.TrackId
+join Invoice on Invoice.InvoiceId = InvoiceLine.InvoiceId
+group by Artist.Name 
+order by earnings  desc , Artist_Name
+Limit 7
